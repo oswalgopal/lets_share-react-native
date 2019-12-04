@@ -1,12 +1,13 @@
 import React from 'react';
 import {Text} from 'react-native';
 export default class HomePage extends React.Component {
-    constructor() {
-        super();
-    }
+    static navigationOptions = {
+        title: 'Welcome',
+    };
+
     render() {
         return (
-            <Text>This is my home page</Text>
+          <Text>This is my home page</Text>
         )
     }
 }

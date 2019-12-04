@@ -1,25 +1,14 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
+ * main file for the react stack navigator
  */
-
-import React from 'react';
-import {
-  StatusBar,
-} from 'react-native';
-
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 import HomePage from './Components/home';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <HomePage />
-    </>
-  );
-};
+const MainNavigator = createStackNavigator({
+  Home: {screen: HomePage},
+});
+
+const App = createAppContainer(MainNavigator);
 
 export default App;
