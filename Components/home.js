@@ -20,11 +20,12 @@ export default class HomePage extends React.Component {
      */
     AddAdmin() {
         console.log('admin added');
-        api.GetRequest('http://localhost:10000').then(res => {
+        this.props.navigation.navigate('Admin');
+        /*api.GetRequest('http://localhost:10000').then(res => {
             console.log(res);
         }).catch(err => {
             console.error(err);
-        })
+        });*/
     }
     render() {
         return (
