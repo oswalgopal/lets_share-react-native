@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, Button,Modal, Share, TouchableHighlight, Image, View, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import terms_and_condition from '../T&C/terms_and_condition';
 export default class HomePage extends React.Component {
     static navigationOptions = {
         title: 'Welcome',
@@ -68,6 +69,27 @@ export default class HomePage extends React.Component {
         this.props.navigation.navigate('user');
     }
 
+    /**
+     * function for privacy policy
+     * */
+    PrivacyPolicy() {
+        this.props.navigation.navigate('privacypolicy');
+    }
+
+    /**
+     * function for help
+     */
+    help() {
+        this.props.navigation.navigate('help');
+    }
+
+    /***
+     * function for terms and conditions
+     * */
+    TandC() {
+        this.props.navigation.navigate('terms_and_condition');
+    }
+
     render() {
         return (
           <View>
@@ -111,14 +133,17 @@ export default class HomePage extends React.Component {
                   <Icon.Button name={'md-paper'}
                                backgroundColor={'#fff'} color={'#fff'}
                                size={35} style={styles.bottomicon}
+                               onPress={this.PrivacyPolicy.bind(this)}
                   />
                   <Icon.Button name={'md-information-circle'}
                                backgroundColor={'#fff'} color={'#fff'}
                                size={35} style={styles.bottomicon}
+                               onPress={this.TandC.bind(this)}
                   />
                   <Icon.Button name={'md-help-circle'}
                                backgroundColor={'#fff'} color={'#fff'}
                                size={35} style={styles.bottomicon}
+                               onPress={this.help.bind(this)}
                   />
                   <Icon.Button name={'md-share'}
                                backgroundColor={'#fff'} color={'#fff'}
