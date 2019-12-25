@@ -1,7 +1,9 @@
 import React from 'react';
 import { Text, Button,Modal, Share, TouchableHighlight, Image, View, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+var api = new Api();
 import terms_and_condition from '../T&C/terms_and_condition';
+import {Api} from '../../Providers/api';
 export default class HomePage extends React.Component {
     static navigationOptions = {
         title: 'Welcome',
@@ -59,7 +61,17 @@ export default class HomePage extends React.Component {
      * function to add admin
      */
     AddAdmin() {
-        this.props.navigation.navigate('Admin');
+        // this.props.navigation.navigate('Admin');
+        /*api.getapi('https://api.github.com/users/oswalgopal').then(res => {
+                console.log(res);
+        }).catch(err => {
+            console.log(err);
+        });*/
+        api.getapi('https://localhost:10000').then(res => {
+                console.log(res);
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     /**
@@ -182,7 +194,7 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         flexDirection: 'column',
         backgroundColor: '#fff',
-        height: '100%',
+        height: '100%'
     },
     footer: {
         flexDirection: 'row',
