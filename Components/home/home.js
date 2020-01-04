@@ -1,9 +1,19 @@
 import React from 'react';
-import {Text, Button,Modal, Share, TouchableHighlight, Image, View, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
+import {
+    Text,
+    Modal,
+    Share,
+    TouchableHighlight,
+    View,
+    StyleSheet,
+    StatusBar,
+    ProgressBarAndroid,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 var api = new Api();
 import terms_and_condition from '../T&C/terms_and_condition';
 import {Api} from '../../Providers/api';
+import {AsyncStorage} from 'react-native';
 export default class HomePage extends React.Component {
     static navigationOptions = {
         title: 'Welcome',
@@ -26,12 +36,8 @@ export default class HomePage extends React.Component {
         this.state = {
             modalVisible: false,
             email: '',
+            loader: false
         };
-        api.getApi('').then(res => {
-            console.log('res from api', res);
-        }).catch(err => {
-            console.error('error from api', err);
-        });
     }
 
     setModalVisible(visible) {
@@ -67,18 +73,38 @@ export default class HomePage extends React.Component {
      * function to add admin
      */
     AddAdmin() {
-        // this.props.navigation.navigate('Admin');
+        this.setState({
+            loader: true,
+        });
         const param = {
             api: '/addAdmin',
             data: {
-                email: 'oswalgopal2505@mgmail.com',
+                email: ' ',
             },
         };
         api.postApi(param).then(res => {
-            console.log('oye  m chal rha hu');
-                console.log(res);
-        }).catch(err => {
-            console.log(err);
+            this.setState({
+                loader: false,
+            });
+            console.log(JSON.stringify(res));
+            // console.log(res.response.data[0].addadmin);
+            AsyncStorage.setItem('accessCode', JSON.stringify(res.response.data[0].addadmin)).then(resp => {
+                // console.log('res', res);
+                this.props.navigation.navigate('Admin', {
+                    access_code: res.response.data[0].addadmin
+                });
+            }).catch(err => {
+                console.log(err);
+                window.alert('something went wrong ');
+            });
+            // const data = AsyncStorage.getItem('accessCode');
+            // console.log('data', data);
+        }).catch(error => {
+            this.setState({
+                loader: false
+            });
+            window.alert('something went wrong ');
+            console.log(error);
         });
     }
 
@@ -102,17 +128,10 @@ export default class HomePage extends React.Component {
     help() {
         this.props.navigation.navigate('help');
     }
-
-    /***
-     * function for terms and conditions
-     * */
-    TandC() {
-        this.props.navigation.navigate('terms_and_condition');
-    }
-
     render() {
         return (
           <View>
+              <StatusBar backgroundColor="#5e74c2" barStyle="light-content" />
               <Modal
                 animationType="slide"
                 transparent={false}
@@ -122,7 +141,6 @@ export default class HomePage extends React.Component {
                   <View style={{marginTop: 22}}>
                       <View>
                           <Text>Hello World!</Text>
-
                           <TouchableHighlight
                             onPress={() => {
                                 this.setModalVisible(!this.state.modalVisible);
@@ -132,6 +150,9 @@ export default class HomePage extends React.Component {
                       </View>
                   </View>
               </Modal>
+              { this.state.loader &&
+                <ProgressBarAndroid styleAttr="Horizontal" color="#5e74c2" />
+              }
               <View style={styles.View}>
                   <Text style={styles.text}>
                       Select the method for generating the access code or accessing the data
@@ -158,7 +179,7 @@ export default class HomePage extends React.Component {
                   <Icon.Button name={'md-information-circle'}
                                backgroundColor={'#fff'} color={'#fff'}
                                size={35} style={styles.bottomicon}
-                               onPress={this.TandC.bind(this)}
+                               onPress={() => (this.props.navigation.navigate('terms_and_condition'))}
                   />
                   <Icon.Button name={'md-help-circle'}
                                backgroundColor={'#fff'} color={'#fff'}

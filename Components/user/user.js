@@ -1,12 +1,14 @@
 import React from 'react';
 import {View, Button, TextInput, Text, StyleSheet} from 'react-native';
+var api = new Api();
 import Icon from 'react-native-vector-icons/Ionicons';
+import {Api} from '../../Providers/api';
 export default class user extends React.Component {
   constructor() {
     super();
     this.state = {
-      text: '',
-    }
+      access_code: '',
+    };
   }
   static navigationOptions = {
     title: '',
@@ -18,9 +20,35 @@ export default class user extends React.Component {
       textAlign: 'center',
     },
   };
+
+  /**
+   * function to check the access code
+   * */
+  checkAccessCode() {
+    const param = {
+      api: '/check_access_code',
+      data: {
+        access_code: this.state.access_code,
+      },
+    };
+    api.postApi(param).then(res => {
+      console.log(res);
+      if (res.response[0].check_access_code) {
+        this.props.navigation.navigate('ShowDataUser', {
+            access_code: this.state.access_code,
+        });
+      } else {
+        window.alert('Invalid access Code');
+      }
+    }).catch(err => {
+      window.alert('something went wrong');
+    });
+  }
+
   render() {
     return (
       <View style={styles.view}>
+
         <Text style={styles.text}>
           Enter the access Code to access the data
         </Text>
@@ -28,7 +56,7 @@ export default class user extends React.Component {
           <TextInput
             style={styles.input}
             placeholder="Access Code"
-            onChangeText={(text) => this.setState({text})}
+            onChangeText={(text) => this.setState({access_code: text})}
             value={this.state.text}
           />
           <Icon.Button name={'md-checkmark-circle'}
@@ -36,6 +64,7 @@ export default class user extends React.Component {
                        color={'#5e74c2'}
                        style={styles.icon}
                        size={45}
+                       onPress={this.checkAccessCode.bind(this)}
           />
         </View>
         {/*<Text style={styles.text2}>

@@ -7,7 +7,7 @@ export class Api {
    * @param param: link for the api
    */
   getApi(param) {
-    return fetch(this.serverpath, {
+    return fetch(this.serverpath + param, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -30,11 +30,13 @@ export class Api {
     return fetch(this.serverpath + param.api, {
       method: 'POST',
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: param.data,
+      body: JSON.stringify(param.data),
     })
-      .then(res => res.json()).then(response => {
+      .then(res => res.json())
+      .then(response => {
         return response;
     }).catch(err => {
         return err;
