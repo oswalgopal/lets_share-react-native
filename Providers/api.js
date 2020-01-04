@@ -1,13 +1,13 @@
 export class Api {
-  serverpath = 'https//localhost:10000';
+  serverpath = 'http://13.233.125.129:8081';
   constructor() {}
 
   /**
    * function for the get api
    * @param param: link for the api
    */
-  getapi(param) {
-    return fetch(param, {
+  getApi(param) {
+    return fetch(this.serverpath, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -22,19 +22,22 @@ export class Api {
         return err;
       });
   }
+
   /**
-   * function to get the http request
+   * function for the post api
    */
-  GetRequest(param) {
-    return fetch(param,{
-      method: 'GET',
+  postApi(param) {
+    return fetch(this.serverpath + param.api, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: param.data,
     })
-      .then((response) => response.json().then(data => {
-          return data;
-        }),
-      )
-      .catch(error => {
-        return error;
+      .then(res => res.json()).then(response => {
+        return response;
+    }).catch(err => {
+        return err;
       });
   }
 }

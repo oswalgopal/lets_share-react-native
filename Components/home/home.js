@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button,Modal, Share, TouchableHighlight, Image, View, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
+import {Text, Button,Modal, Share, TouchableHighlight, Image, View, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 var api = new Api();
 import terms_and_condition from '../T&C/terms_and_condition';
@@ -25,7 +25,13 @@ export default class HomePage extends React.Component {
         super();
         this.state = {
             modalVisible: false,
+            email: '',
         };
+        api.getApi('').then(res => {
+            console.log('res from api', res);
+        }).catch(err => {
+            console.error('error from api', err);
+        });
     }
 
     setModalVisible(visible) {
@@ -62,12 +68,14 @@ export default class HomePage extends React.Component {
      */
     AddAdmin() {
         // this.props.navigation.navigate('Admin');
-        /*api.getapi('https://api.github.com/users/oswalgopal').then(res => {
-                console.log(res);
-        }).catch(err => {
-            console.log(err);
-        });*/
-        api.getapi('https://localhost:10000').then(res => {
+        const param = {
+            api: '/addAdmin',
+            data: {
+                email: 'oswalgopal2505@mgmail.com',
+            },
+        };
+        api.postApi(param).then(res => {
+            console.log('oye  m chal rha hu');
                 console.log(res);
         }).catch(err => {
             console.log(err);
